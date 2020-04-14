@@ -27,6 +27,7 @@ new_user_exist_text = "Вы уже подписаны, я сообщу когд�
 cancel_answer_text = "Жаль, ждем в след раз"
 complite_answer = "Поздравляем вы записаны"
 message_from_user = "Сообщение от"
+'new comment'
 
 def query_to_DB(sql_select_Query, user_data=None):
     print(user_data)
