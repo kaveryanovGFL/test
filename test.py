@@ -1,5 +1,4 @@
-#!/bin/env python3.6
-# -*- coding: utf-8 -*-
+a = 1
 
 from settings import token, admin_id, url, login, password, db_name
 
