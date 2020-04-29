@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from settings import token
 from yobit import price, etherium
-''' For install telegram.ext and apiai use pip install python-telegram-bot apiai pytube --upgrade'''
+''' For install telegram.ext and apiai use pip3 install python-telegram-bot pytube3 apiai --upgrade'''
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 from telegram.ext.dispatcher import run_async
 import apiai
@@ -13,7 +13,7 @@ from pytube import YouTube
 import requests as req
 from bs4 import BeautifulSoup
 
-chat_ids = [line.split(',') for line in open(r"/opt/www/main/keepass/chat_ids.txt", 'r')]
+chat_ids = [line.split(',') for line in open(r"chat_ids.txt", 'r')]
 chat_ids = [int(i) for i in chat_ids[0]]
 updater = Updater(token=token)
 dispatcher = updater.dispatcher
@@ -23,7 +23,7 @@ dispatcher = updater.dispatcher
 def startCommand(bot, update):
     if (update.message.chat_id not in chat_ids):
         chat_ids.append(update.message.chat_id)
-        f = open(r"/opt/www/main/keepass/chat_ids.txt", "w")
+        f = open(r"chat_ids.txt", "w")
         f.write(str(chat_ids).replace(
             '[', '').replace(']', '').replace('\n', ''))
         f.close()
@@ -78,18 +78,22 @@ def bitcCommand(bot, update):
 @run_async
 def nodCommand(bot, update):
     '''Send key for NOD 32'''
-    text_keys = ''
-    url = r"https://6fornod.com/keys-nod-32-2/"
+    just_key = set()
+    key = False
+    url = r"http://sovet-v-svet.blogspot.com/2019/01/2019-2020-32-nod32-free-keys-for-nod-32.html"
     nod_keys = req.get(url)
     soup = BeautifulSoup(nod_keys.content, 'html.parser')
-    table = soup.find('tbody', {'id': 'block_keys3'})
-    for key in table.find_all('tr'):
-        nod_key = key.find('td', class_='password')
-        nod_key_date = key.find('td', class_='dexpired')
-        if nod_key is not None:
-            text_keys += '{} valid until {}\n'.format(nod_key.getText(), nod_key_date.getText())
-    bot.send_message(chat_id=update.message.chat_id,
-                     text=text_keys)
+    table = soup.find('div', {'dir': 'ltr'})
+    for child in table.findChildren('span'):
+        if "для всех версий!!!" in str(child).lower():
+            key = True
+        if "пароль" in str(child).lower():
+            break
+
+        if key and child.find('b') is not None and '-' in child.find('b').text:
+            just_key.add(child.find('b').text.strip())
+    text = ''.join(str(e) + '\n' for e in list(just_key))
+    bot.send_message(chat_id=update.message.chat_id, text=text)
 
 
 @run_async
