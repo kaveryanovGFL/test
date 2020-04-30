@@ -93,6 +93,7 @@ def nodCommand(bot, update):
         if key and child.find('b') is not None and '-' in child.find('b').text:
             just_key.add(child.find('b').text.strip())
     text = ''.join(str(e) + '\n' for e in list(just_key))
+
     bot.send_message(chat_id=update.message.chat_id, text=text)
 
 
