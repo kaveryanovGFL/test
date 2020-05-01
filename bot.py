@@ -9,7 +9,7 @@ import json
 from time import sleep, strftime
 import re
 import os
-from pytube import YouTube
+# from pytube import YouTube
 import requests as req
 from bs4 import BeautifulSoup
 
@@ -105,12 +105,13 @@ def textMessage(bot, update):
     responseJson = json.loads(request.getresponse().read().decode('utf-8'))
     response = responseJson['result']['fulfillment']['speech']
     if 'http' in update.message.text:
-        yt = YouTube(update.message.text)
-        name = strftime("%Y%m%d")
-        yt = yt.streams.filter(progressive=True, file_extension='mp4').order_by('resolution').desc().first()
-        yt.download(filename=name)
-        bot.send_document(chat_id=update.message.chat_id, document=open(name + '.mp4', 'rb'), timeout=100)
-        os.remove(name + '.mp4')
+        pass
+        # yt = YouTube(update.message.text)
+        # name = strftime("%Y%m%d")
+        # yt = yt.streams.filter(progressive=True, file_extension='mp4').order_by('resolution').desc().first()
+        # yt.download(filename=name)
+        # bot.send_document(chat_id=update.message.chat_id, document=open(name + '.mp4', 'rb'), timeout=100)
+        # os.remove(name + '.mp4')
     else:
         if response:
             bot.send_message(chat_id=update.message.chat_id, text=response)
