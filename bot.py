@@ -105,7 +105,7 @@ def textMessage(bot, update):
     responseJson = json.loads(request.getresponse().read().decode('utf-8'))
     response = responseJson['result']['fulfillment']['speech']
     if 'http' in update.message.text:
-        pass
+        response+= "\n ютуб пока не работает"
         # yt = YouTube(update.message.text)
         # name = strftime("%Y%m%d")
         # yt = yt.streams.filter(progressive=True, file_extension='mp4').order_by('resolution').desc().first()
