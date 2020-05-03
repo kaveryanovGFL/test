@@ -1,19 +1,18 @@
 # -*- coding: utf-8 -*-
-from settings import token
+from settings import token, file_path, confirm_text, registred_user, end_work
 from yobit import price, etherium
-''' For install telegram.ext and apiai use pip3 install python-telegram-bot pytube3 apiai --upgrade'''
+''' For install telegram.ext and apiai use
+    pip3 install python-telegram-bot pytube3 apiai --upgrade'''
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 from telegram.ext.dispatcher import run_async
 import apiai
 import json
-from time import sleep, strftime
-import re
-import os
+from time import sleep
 # from pytube import YouTube
 import requests as req
 from bs4 import BeautifulSoup
 
-chat_ids = [line.split(',') for line in open(r"chat_ids.txt", 'r')]
+chat_ids = [line.split(',') for line in open(r"{}".format(file_path), 'r')]
 chat_ids = [int(i) for i in chat_ids[0]]
 updater = Updater(token=token)
 dispatcher = updater.dispatcher
@@ -23,14 +22,14 @@ dispatcher = updater.dispatcher
 def startCommand(bot, update):
     if (update.message.chat_id not in chat_ids):
         chat_ids.append(update.message.chat_id)
-        f = open(r"chat_ids.txt", "w")
+        f = open(r"{}".format(file_path), "w")
         f.write(str(chat_ids).replace(
             '[', '').replace(']', '').replace('\n', ''))
         f.close()
         print('new user = {}'.format(chat_ids))
-        bot.send_message(chat_id=update.message.chat_id, text='Окей, буду уведомлять)')
+        bot.send_message(chat_id=update.message.chat_id, text=confirm_text)
     else:
-        bot.send_message(chat_id=update.message.chat_id, text='Уже работаем, как только будут изменения напишу :)')
+        bot.send_message(chat_id=update.message.chat_id, text=registred_user)
     schek(bot, update)
 
 
@@ -38,23 +37,20 @@ def startCommand(bot, update):
 def stopCommand(bot, update):
     if (update.message.chat_id in chat_ids):
         chat_ids.remove(update.message.chat_id)
-        f = open(r"/opt/www/main/keepass/chat_ids.txt", "w")
+        f = open(r"{}".format(file_path), "w")
         f.write(str(chat_ids).replace(
             '[', '').replace(']', '').replace('\n', ''))
         f.close()
         print('dell user = {}'.format(chat_ids))
-    bot.send_message(chat_id=update.message.chat_id,
-                     text='Ок, если захочешь обратно уведомления напиши /start')
+    bot.send_message(chat_id=update.message.chat_id, text=end_work)
 
 
 @run_async
 def schek(bot, update):
-    old_price = round(
-        int(re.sub(' ', '', etherium().split('\n')[6].split(' - ')[0].split('.')[0])))
+    old_price = round(int(etherium().split('\n')[6].split(' - ')[0]))
     while True:
-        new_prise = round(
-            int(re.sub(' ', '', etherium().split('\n')[6].split(' - ')[0].split('.')[0])))
-        if ((old_price - new_prise) >= 1 or (new_prise - old_price) >= 1):
+        new_prise = round(int(etherium().split('\n')[6].split(' - ')[0]))
+        if (old_price != new_prise):
             old_price = new_prise
             for id in chat_ids:
                 bot.send_message(chat_id=id, text=etherium())
@@ -105,7 +101,7 @@ def textMessage(bot, update):
     responseJson = json.loads(request.getresponse().read().decode('utf-8'))
     response = responseJson['result']['fulfillment']['speech']
     if 'http' in update.message.text:
-        response+= "\n ютуб пока не работает"
+        pass
         # yt = YouTube(update.message.text)
         # name = strftime("%Y%m%d")
         # yt = yt.streams.filter(progressive=True, file_extension='mp4').order_by('resolution').desc().first()

@@ -5,7 +5,7 @@ import requests
 
 def price(coins, names):
     '''Create price to show by names coins'''
-    remote_data = requests.get('https://api.exmo.com/v1/ticker/').json()
+    remote_data = requests.get('https://api.exmo.com/v1.1/ticker').json()
     data = remote_data[coins]
     value = '''Стоимость {} к доллару:
     {} - максимальная цена сделки за 24 часа
