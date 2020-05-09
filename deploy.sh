@@ -1,4 +1,5 @@
 #!/bin/sh
+echo 'start pull'
 cd /home/malkir/scripts/telegramBot
 result=$(git pull)
 if [ "$result" = "2Already up-to-date." ]; then
