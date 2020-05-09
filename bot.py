@@ -17,7 +17,11 @@ chat_ids = [int(i) for i in chat_ids[0]]
 updater = Updater(token=token)
 dispatcher = updater.dispatcher
 
+<<<<<<< HEAD
 # test 2
+=======
+# test 8
+>>>>>>> a6f81e478153ab6a19525fe1a867383a2413afa9
 @run_async
 def startCommand(bot, update):
     if (update.message.chat_id not in chat_ids):
