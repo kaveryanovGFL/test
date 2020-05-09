@@ -5,8 +5,7 @@ if [ "$result" = "2Already up-to-date." ]; then
   echo "Strings are equal."
 else
   echo 'reboot'
-  processId=$(ps -ef | grep 'bot.py' | grep -v 'grep' | awk '{ printf $2 }')
-  kill "$processId"
+  kill $(ps aux | grep 'bot.py' | grep -v "grep" | cut -d " " -f2)
   echo 'start'
   python3  /home/malkir/scripts/telegramBot/bot.py
 fi
