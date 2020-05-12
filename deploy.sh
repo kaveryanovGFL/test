@@ -6,7 +6,7 @@ if [ "$result" = "2Already up-to-date." ]; then
   echo "Strings are equal."
 else
   echo 'reboot'
-  pkill -f httpd
+  pkill -f bot.py
   echo 'start'
   python3  /home/malkir/scripts/telegramBot/bot.py
 fi
