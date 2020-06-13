@@ -2,7 +2,7 @@
 echo 'start pull'
 cd /home/malkir/scripts/telegramBot
 result=$(git pull)
-if [ "$result" = "2Already up-to-date." ]; then
+if [ "$result" = "Already up-to-date." ]; then
   echo "Strings are equal."
 else
   echo 'reboot'
